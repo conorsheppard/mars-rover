@@ -1,0 +1,5 @@
+FROM maven:3-openjdk-18
+WORKDIR /opt
+COPY / /opt/
+RUN ./mvn-build.sh
+ENTRYPOINT mvn test && java -jar target/mars-rover*.jar
