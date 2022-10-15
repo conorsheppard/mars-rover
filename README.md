@@ -19,7 +19,7 @@ Make sure you have Docker installed and the Docker daemon is running, then execu
 $ make docker-run
 ```
 
-<img src="mars-rover.gif" style="text-align: centre;" width="80%" alt="mars rover">
+![Tutorial][tutorial]
 
 ### Build & Run With Maven 
 Make sure you have the Maven command line tool installed: `brew install maven`<br/>
@@ -91,3 +91,5 @@ No test case for a rover which _starts_ off-grid because this is checked outside
 
 **RoverServiceTest:** Tests the `RoverService`'s `execute()` method by generating user input and feeding it to the standard
 input (`executeConsoleInputAndGetStream()`).
+
+[tutorial]: mars-rover-720p-12-frames-compressed.gif
