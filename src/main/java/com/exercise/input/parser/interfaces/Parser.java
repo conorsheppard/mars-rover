@@ -2,6 +2,7 @@ package com.exercise.input.parser.interfaces;
 
 import com.exercise.exception.IntegerOverflowException;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,12 +13,14 @@ public interface Parser <T> {
     * Checks that the coordinate input is within the bounds of a 32-bit integer (i.e. 2^31-1 or less)
     * */
     static List<Integer> checkInputBounds(String[] gridDimensions) throws IntegerOverflowException {
-        var numsChecked = Arrays.stream(gridDimensions).map(Long::parseLong).filter(num -> num <= Integer.MAX_VALUE).map(Math::toIntExact).toList();
-        if (numsChecked.size() < 2) {
+        var numsChecked = Arrays.stream(gridDimensions)
+                .map(BigInteger::new)
+                .filter(bigInt -> bigInt.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0).toList();
+        if (numsChecked.size() > 0) {
             var e = new IntegerOverflowException();
             System.out.println(e.getMessage());
             throw e;
         }
-        return numsChecked;
+        return Arrays.stream(gridDimensions).map(BigInteger::new).map(BigInteger::intValue).toList();
     }
 }

@@ -16,30 +16,33 @@ import com.exercise.rover.Rover;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 import java.util.List;
 
 public class InputReader {
+    private final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     private final InputValidator roverInputValidator = new RoverInputValidator();
     private final InputValidator gridInputValidator = new GridInputValidator();
     private final Parser<Rover> roverParser = new RoverParser();
     private final Parser<Grid> gridParser = new GridParser();
-    private final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    private final int MAX_USER_INPUT_ERRORS = 10;
+
+    public void readUserInput(List<Rover> rovers, Grid grid) {
+        var continueExecution = true;
+        for (int i = 0; continueExecution && i < MAX_USER_INPUT_ERRORS; i++) {
+            continueExecution = false;
+            try {
+                readInput(rovers, grid);
+            } catch (GridInputException | RoverInputException | IOException | GridSizeException | IntegerOverflowException e) {
+                continueExecution = true; rovers = new LinkedList<>();
+            }
+        }
+    }
 
     public void readInput(List<Rover> rovers, Grid grid) throws GridInputException, RoverInputException, IOException, GridSizeException, IntegerOverflowException {
         readGridDimensions(grid);
         readRoverCommands(in, rovers, grid);
-    }
-
-    private String validateGrid(BufferedReader in) throws GridInputException, IOException {
-        var nextLine = in.readLine();
-        try {
-            gridInputValidator.validate(nextLine);
-        } catch (Exception e) {
-            System.out.println("Error relating to Grid input on line 1. Check input and start again.");
-            throw new GridInputException();
-        }
-
-        return nextLine;
+        in.close();
     }
 
     private void readGridDimensions(Grid grid) throws GridSizeException, IntegerOverflowException, IOException, GridInputException {
@@ -53,6 +56,17 @@ public class InputReader {
         }
     }
 
+    private String validateGrid(BufferedReader in) throws GridInputException, IOException {
+        var nextLine = in.readLine();
+        try {
+            gridInputValidator.validate(nextLine);
+        } catch (Exception e) {
+            System.out.println("Error relating to Grid input on line 1. Check input and start again.");
+            throw new GridInputException();
+        }
+        return nextLine;
+    }
+
     private void readRoverCommands(BufferedReader in, List<Rover> rovers, Grid grid) throws RoverInputException, IOException, IntegerOverflowException {
         for (int line = 2; ; line++) { // grid is 1st line of input, rovers start at line 2
             var nextLine = in.readLine();
@@ -64,8 +78,12 @@ public class InputReader {
                 throw new RoverInputException();
             }
             var newRover = roverParser.parse(nextLine);
-            rovers.add(newRover.setLost(newRover.getPosition().getYCoordinate() > grid.getHeight() ||
-                    newRover.getPosition().getXCoordinate() > grid.getWidth())); // check if rover is lost from the get-go
+            if (newRover.getPosition().getYCoordinate() > grid.getHeight() ||
+                    newRover.getPosition().getXCoordinate() > grid.getWidth()) {
+                System.out.println("Rover landed off grid. Please check input and try again.");
+                throw new RoverInputException();
+            }
+            rovers.add(newRover); // check if rover is lost from the get-go
         }
     }
 }

@@ -31,12 +31,14 @@ public class InputReaderTest {
             "  4  ,' (2, 3, E)  ','Invalid input for Grid'",
             " 2147483647 4  ,' (2, 3, E)  ',''",
             " 2147483648 4  ,' (2, 3, E)  ','Input value(s) must be within the bounds of a signed 32 bit integer'",
-            " 4 4  ,' (2147483647, 3, E)  ',''",
+            " 4 4  ,' (2147483647, 3, E)  ','Invalid input for Rover'", // off-grid landing
             " 4 4  ,' (2147483648, 3, E)  ','Input value(s) must be within the bounds of a signed 32 bit integer'",
+            " 4 2000000000000000000000  ,'','Input value(s) must be within the bounds of a signed 32 bit integer'",
             " 4 4  ,' (, 3, E)  ','Invalid input for Rover'",
             " 4 4  ,' (, 3, E) GG ','Invalid input for Rover'",
             " -4 4  ,' (2, 3, E) LFRFF ','Invalid input for Grid'",
             " 4 4  ,' (-2, 3, E) LFRFF ','Invalid input for Rover'",
+            " 1 1  ,' (0, 0, E) LF ',''",
     })
     @DisplayName("Test for InputReader readInput() method")
     public void testReadInput(ArgumentsAccessor args) throws IOException {

@@ -22,7 +22,9 @@ public class RoverServiceTest {
     private final Charset utf8 = StandardCharsets.UTF_8;
 
     @ParameterizedTest
-    @CsvSource("' 4 4  ',' (2, 3, E) LFRFF ','(4, 4, E)\n'")
+    @CsvSource({
+            "' 4 4  ',' (2, 3, E) LFRFF ','(4, 4, E)\n'",
+    })
     @DisplayName("Test for RoverService execute() method")
     public void testRoverService(ArgumentsAccessor args) throws IOException {
         var currentOutputStream = executeConsoleInputAndGetStream(args);
