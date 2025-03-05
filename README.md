@@ -1,10 +1,12 @@
+<img src="./badges/jacoco.svg" style="display: flex;" alt="jacoco-test-coverage-badge">
+
 ### Description
 Mars rover application that takes in commands and moves one or more robots around Mars.
 
 Full exercise instructions [here](exercise-description.md).
 
 ### Requirements
-For best experience, a Java 18 and Maven installation are advised - alternatively you can build and run with Docker.
+For best experience, a Java 23 and Maven installation are advised - alternatively you can build and run with Docker.
 
 ### Build & Run With Docker
 
