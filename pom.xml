@@ -8,9 +8,12 @@
     <name>mars-rover</name>
 
     <properties>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
         <junit.version>5.5.2</junit.version>
+        <lombok.version>1.18.36</lombok.version>
+        <java.version>21</java.version>
     </properties>
 
     <dependencies>
@@ -78,6 +81,69 @@
                         <mainClass>com.exercise.Application</mainClass>
                     </manifest>
                 </archive>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+            <configuration>
+                <excludes>
+                    <exclude>com/assignment/Main.class</exclude>
+                    <exclude>com/assignment/system/ProductSystem.class</exclude>
+                </excludes>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>jacoco-report</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>target/jacoco-report</outputDirectory>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>jacoco-check</id>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                    <configuration>
+                        <rules>
+                            <rule>
+                                <element>BUNDLE</element>
+                                <limits>
+                                    <limit>
+                                        <counter>LINE</counter>
+                                        <value>COVEREDRATIO</value>
+                                        <minimum>0.90</minimum>
+                                    </limit>
+                                </limits>
+                            </rule>
+                        </rules>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>23</source>
+                <target>23</target>
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>${lombok.version}</version>
+                    </path>
+                </annotationProcessorPaths>
             </configuration>
         </plugin>
     </plugins>
